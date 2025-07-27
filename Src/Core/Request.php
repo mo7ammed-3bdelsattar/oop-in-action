@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 
 
 class Request{
@@ -76,11 +77,11 @@ class Request{
     public function url(){
         return $this->server['HTTP_HOST'] ?? 'unknown';
     }
-    public function path(){
+    public function uri(){
         return $this->server['REQUEST_URI'] ?? 'unknown';
     }
     public function queryParams(): array {
-        $query=parse_url($this->path(), PHP_URL_QUERY);
+        $query=parse_url($this->uri(), \PHP_URL_QUERY);
         parse_str($query, $params);
         return $params;
     }

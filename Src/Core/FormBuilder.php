@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 class FormBuilder{
     private string $form;
     function __construct($action, $method="GET", array $attributes = []) {
@@ -9,6 +10,7 @@ class FormBuilder{
         $attributes = $this->buildAttributes($attributes);
         $this->form .= "<label for=\"$name\">".ucfirst($name)."</label>";
         $this->form .= "<input type=\"$type\" name=\"$name\" value=\"$value\" $attributes>";
+        $this->form .= "<div>".Session::error("$name")."</div>";
         return $this;
     }
     function submit(string $value = "Submit", array $attributes = []): self {
