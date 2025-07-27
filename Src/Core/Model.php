@@ -22,11 +22,7 @@ class Model
         return $this->table;
     }
     private function conn(){
-        return Database::getConnection("localhost",'dbname',"root","");
-    }
-    public function getInsertId(): string|false
-    {
-        return $this->conn()->lastInsertId();
+        return Database::getConnection($_ENV['DB_HOST'], $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
     }
     public function findAll()
     {
@@ -38,7 +34,7 @@ class Model
     public function find(string $id): array|bool
     {
 
-        $pdo = $this->conn();
+        $pdo = $this->conn();   
         $sql = "SELECT * FROM {$this->getTable()} WHERE id = :id";
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id', $id, PDO::PARAM_STR);
@@ -101,20 +97,6 @@ class Model
         $stm = $conn->prepare($sql);
         $stm->bindValue(':id',$id ,PDO::PARAM_INT);
         return $stm->execute();
-    }
-    public function numRows(){
-        $sql = "SELECT COUNT(*) AS total FROM {$this->getTable()}";
-        $stm = $this->conn()->query($sql);
-        $row = $stm->fetch(PDO::FETCH_ASSOC);
-        return (int) $row['total'];
-    }
-    public function findBy(string $field, string $value): array|bool
-    {
-        $sql = "SELECT * FROM {$this->getTable()} WHERE $field = :value";
-        $stm = $this->conn()->prepare($sql);
-        $stm->bindValue(':value', $value, PDO::PARAM_STR);
-        $stm->execute();
-        return $stm->fetch(PDO::FETCH_ASSOC) ?: false;
     }
 
 }

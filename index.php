@@ -1,10 +1,11 @@
 <?php
-define("ROOT_PATH", dirname(__DIR__)."\OOP_in_action\Src\\");
+define("ROOT_PATH", dirname(__DIR__)."\OOP_in_action\\");
 spl_autoload_register(function ($class_name) {
-    require_once (\ROOT_PATH . str_replace("\\", "/",  $class_name) . ".php");
+    require_once (\ROOT_PATH ."\Src\\". str_replace("\\", "/",  $class_name) . ".php");
 });
 
 Core\Session::start();
+Core\Dotenv::load(\ROOT_PATH . '.env');
 
 Core\Router::get('/', ["controller" => "home","action"=>"index"]);
 Core\Router::get('/home', ["controller" => "home","action"=>"index"]);
